@@ -840,18 +840,10 @@ class WP_Object_Cache {
 		else
 			$this->m = new Memcached( $persistent_id );
 
-		if ( empty( $memcached_servers ) && ( $env = getenv( 'MEMCACHED_SERVERS' ) ) ) {
-			$env_servers       = explode( ';', $env );
-			$memcached_servers = array();
-
-			foreach ( $env_servers as $env_server ) {
-				if ( ! empty( $env_server ) ) {
-					$memcached_servers[] = explode( ':', $env_server, 3 );
-				}
-			}
-		}
-
-		$this->servers = empty( $memcached_servers ) ? array( array( '127.0.0.1', 11211 ) ) : $memcached_servers;
+		if ( isset( $memcached_servers ) )
+			$this->servers = $memcached_servers;
+		else
+			$this->servers = array( array( '127.0.0.1', 11211 ) );
 
 		$this->addServers( $this->servers );
 
